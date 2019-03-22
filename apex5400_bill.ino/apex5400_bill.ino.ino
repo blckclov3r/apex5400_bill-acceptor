@@ -39,11 +39,14 @@ void setup() {
   delay(1000);
   lcd.clear();
 
+
+
 }
 int value = 0;
-char pass[5];
+
 boolean display_condition = false;
 void countPulses() {
+  lcd.clear();
   int val = digitalRead(2);
   display_condition = true;
   if (val == LOW) {
@@ -51,19 +54,142 @@ void countPulses() {
     pulses += 1;
     displayMe = true;
   }
-  lcd.clear();
+
   lcd.setCursor(0, 0);
   lcd.print("Credits");
   lcd.setCursor(0, 1);
   lcd.print("Php: " + String(pulses));
 
 }
-
+boolean state = true;
 void loop() {
 
   char customKey = customKeypad.getKey();
   if (customKey != NO_KEY) {
     Serial.println(customKey);
+    getDisplayABC();
+    if ( customKey == 'A' && state == true) {
+      state = false;
+      if (customKeypad.waitForKey() == 'D') {
+        Serial.println("You've press letter A");
+        lcd.clear();
+        delay(100);
+        lcd.clear();
+        lcd.setCursor(0, 0);
+        lcd.print("Insert Money");
+        lcd.setCursor(0, 1);
+        lcd.print("Credits: " + String(pulses));
+        delay(100);
+        for (int i = pulses ; i > 0; i--) {
+          pulses = pulses - 1;
+          delay(500);
+          lcd.clear();
+          lcd.setCursor(0, 0);
+          lcd.print("Insert Money");
+          lcd.setCursor(0, 1);
+          lcd.print("Credits: " + String(pulses));
+          if (pulses == 0) {
+            state = true;
+          }
+        }
+        Serial.print("Pulse update: "); Serial.println(pulses);
+      }
+    } else if (customKeypad.waitForKey() == 'B' || customKeypad.waitForKey() == 'C') {
+      lcd.clear();
+      lcd.setCursor(5, 0);
+      lcd.print("Error");
+      lcd.setCursor(5, 1);
+      lcd.print("Error");
+      delay(3000);
+      getDisplayABC();
+      state = true;
+      return;
+    }else{
+      return;
+    }
+
+
+
+    if (customKey == 'B' && state == true) {
+      state = false;
+      if (customKeypad.waitForKey() == 'D') {
+        Serial.println("You've press letter B");
+        lcd.clear();
+        delay(100);
+        lcd.clear();
+        lcd.setCursor(0, 0);
+        lcd.print("Insert Money");
+        lcd.setCursor(0, 1);
+        lcd.print("Credits: " + String(pulses));
+        delay(100);
+        for (int i = pulses ; i > 0; i -= 5) {
+          pulses = pulses - 5;
+          delay(500);
+          lcd.clear();
+          lcd.setCursor(0, 0);
+          lcd.print("Insert Money");
+          lcd.setCursor(0, 1);
+          lcd.print("Credits: " + String(pulses));
+          if (pulses == 0) {
+            state = true;
+          }
+        }
+      }
+      Serial.print("Pulse update: "); Serial.println(pulses);
+    } else if (customKeypad.waitForKey() == 'A' || customKeypad.waitForKey() == 'C') {
+      lcd.clear();
+      lcd.setCursor(5, 0);
+      lcd.print("Error");
+      lcd.setCursor(5, 1);
+      lcd.print("Error");
+      delay(3000);
+      getDisplayABC();
+      state = true;
+      return;
+    }else{
+      return;
+    }
+
+    if (customKey == 'C' && state == true) {
+      state = false;
+      if (customKeypad.waitForKey() == 'D') {
+        Serial.println("You've press letter C");
+        lcd.clear();
+        delay(100);
+        lcd.clear();
+        lcd.setCursor(0, 0);
+        lcd.print("Insert Money");
+        lcd.setCursor(0, 1);
+        lcd.print("Credits: " + String(pulses));
+        delay(100);
+        for (int i = pulses ; i > 0; i -= 10) {
+          pulses = pulses - 10;
+          delay(500);
+          lcd.clear();
+          lcd.setCursor(0, 0);
+          lcd.print("Insert Money");
+          lcd.setCursor(0, 1);
+          lcd.print("Credits: " + String(pulses));
+          if (pulses == 0) {
+            state = true;
+          }
+        }
+      }
+      Serial.print("Pulse update: "); Serial.println(pulses);
+    } else if (customKeypad.waitForKey() == 'A' || customKeypad.waitForKey() == 'B') {
+      lcd.clear();
+      lcd.setCursor(5, 0);
+      lcd.print("Error");
+      lcd.setCursor(5, 1);
+      lcd.print("Error");
+      delay(3000);
+      getDisplayABC();
+      state = true;
+      return;
+    }else{
+      return;
+    }
+
   }
 
 
@@ -77,108 +203,26 @@ void loop() {
   }
 
   if (displayMe) {
+    if (pulses <= 0) {
+      pulses = 0;
+    }
     Serial.print("displayMe: ");
     Serial.println(pulses);
     displayMe = false;
   }
 
-  if (pulses == 20) {
-    Serial.println("Pulses == 20");
-    delay(1000);
-    getDisplayABC();
-    if (customKeypad.waitForKey() == 'A') {
-      Serial.println("You've press letter A");
-      lcd.clear();
-      lcd.setCursor(0, 0);
-      lcd.print("Select Amount");
-      lcd.setCursor(0, 1);
-      pass[0] = customKeypad.waitForKey();
-      pass[1] = customKeypad.waitForKey();
-      pass[2] = customKeypad.waitForKey();
-      lcd.print(pass);
-      pass[3] = '\0';
-      if (pass[3] == '\0') {
-        Serial.println("pass[3] == null");
-        Serial.println(pass);
-        if (customKeypad.waitForKey() == 'D') {
-          Serial.println("Keypad pressed D");
-          if (pass[0] == '0' && pass[1] == '1' && pass[2] == '0') {
-            lcd.clear();
-            lcd.setCursor(0, 0);
-            lcd.print("Insert Money");
-            lcd.setCursor(0, 1);
-            lcd.print("Credits: " + String(pulses));
-            delay(100);
-            for (int i = pulses ; i > 10; i--) {
-              pulses = pulses - 1;
-              delay(500);
-              lcd.clear();
-              lcd.setCursor(0, 0);
-              lcd.print("Insert Money");
-              lcd.setCursor(0, 1);
-              lcd.print("Credits: " + String(pulses));
-            }
-
-            Serial.print("Pulse update: ");
-            Serial.println(pulses);
 
 
-
-          } else if (pass[0] == '0' && pass[1] == '2' && pass[2] == '0') {
-            pulses = pulses - 20;
-            lcd.clear();
-            Serial.print("[1]Pulses: ");
-            Serial.println(pulses);
-            lcd.setCursor(0, 0);
-            lcd.print("Insert Money");
-            lcd.setCursor(0, 1);
-            lcd.print("Credits: " + String(pulses));
-            Serial.print("Pulse update: ");
-            Serial.println(pulses);
-          } else {
-            lcd.clear();
-            lcd.setCursor(2, 0);
-            lcd.print("Try Again");
-            lcd.setCursor(5, 1);
-            lcd.print("Error");
-          }
-        }
-      }
-    }
-  } else if (pulses == 40) {
-    getDisplayABC();
-  } else if (pulses == 50) {
-    getDisplayABC();
-  } else if (pulses == 60) {
-    getDisplayABC();
-  } else if (pulses == 70) {
-    getDisplayABC();
-  } else if (pulses == 80) {
-    getDisplayABC();
-  } else if (pulses == 90) {
-    getDisplayABC();
-  } else if (pulses == 100) {
-    getDisplayABC();
-  } else if (pulses == 120) {
-    getDisplayABC();
-  } else if (pulses == 150) {
-    getDisplayABC();
-  }
 
 
 
 }
 
 
-
-
-
 void getDisplayABC() {
-  delay(5000);
-
   lcd.clear();
   lcd.setCursor(0, 0);
-  lcd.print("A=1,B=5,C=10");
+  lcd.print("A=1, B=5, C=10");
   lcd.setCursor(0, 1);
   lcd.print("D=ENTER");
 
