@@ -78,7 +78,7 @@ void setup() {
   pinMode(interruptPin, INPUT_PULLUP);
   attachInterrupt(0, countPulses, CHANGE);
   lcd.setCursor(5, 0);
-  lcd.print("RRJD-A");
+  lcd.print("ALJUN");
   lcd.setCursor(0, 1);
   lcd.print("");
   delay(1000);
@@ -112,11 +112,12 @@ void loop() {
   if (!display_condition) {
     insertBill();
     display_condition = true;
-    //    lcd.blink();
   }
 
   char customKey = customKeypad.getKey();
+  
   if (customKey != NO_KEY && pulses != 0) {
+    
     Serial.println(customKey);
     getDisplayABC();
     switch (customKey) {
