@@ -1,29 +1,34 @@
 /*
- * source code: bitbucket.com/blckclov3r
- * Apex5400
- * lcd 16x2
- * led 3x
- * servo 3x
- * keypad 4x4
+ * bitbucket.com/blckclov3r
+ * github.com/blckclov3r
+ * facebook.com/blckclov3r
+ * blckclov3r@gmail.com
+ * instagram.com/blckclov3r
+ * 
  */
 
+//header 
 #include <Wire.h>
 #include <String.h>
 #include <LiquidCrystal.h>
 #include <Keypad.h>
+#include <Servo.h>
 
+//led indicator
 #define led1 44
 #define led2 48
 #define led3 52
 
+//servo
 #define servo1 10
 #define servo5 11
 #define servo10 12
 
-#include <Servo.h>
-Servo myservo1;  // create servo object to control a servo
+
+Servo myservo1;  
 Servo myservo5;
 Servo myservo10;
+
 // twelve servo objects can be created on most boards
 int pos = 0;    // variable to store the servo position
 
@@ -65,7 +70,6 @@ void setup() {
   myservo1.write(0);
   myservo5.write(0);
   myservo10.write(0);
-
 
   digitalWrite(led1, LOW);
   digitalWrite(led2, LOW);
@@ -287,3 +291,5 @@ void displayError() {
   getDisplayABC();
   state = true;
 }
+
+//end of program :D
